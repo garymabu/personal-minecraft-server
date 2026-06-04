@@ -1,0 +1,26 @@
+services:
+  minecraft-server:
+    image: itzg/minecraft-bedrock-server
+    container_name: minecraft-server-base
+    ports:
+      - "19132:19132/udp"
+    volumes:
+      - ./data:/data
+    environment:
+      EULA: "TRUE"
+      # I recommend pinning later once you know which version your add-ons support.
+      # LATEST is convenient, but add-ons can break after updates.
+      VERSION: "LATEST"
+
+      SERVER_NAME: "Coimbra Server"
+      GAMEMODE: "survival"
+      DIFFICULTY: "normal"
+      MAX_PLAYERS: "10"
+      VIEW_DISTANCE: "16"
+      TICK_DISTANCE: "4"
+      ALLOW_CHEATS: "true"
+
+      TEXTUREPACK_REQUIRED: "true"
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
