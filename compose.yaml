@@ -24,3 +24,7 @@ services:
     restart: unless-stopped
     stdin_open: true
     tty: true
+    # Lets `send-command` readlink /proc/<pid>/exe to locate bedrock_server
+    # (blocked by Docker's default AppArmor profile otherwise).
+    cap_add:
+      - SYS_PTRACE

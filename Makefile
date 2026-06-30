@@ -1,7 +1,8 @@
 # Backup of the world + custom packs (run with the server stopped).
 # Image-provided packs (vanilla*, chemistry*, editor) are excluded since
 # they're recreated by the container on start.
-WORLD ?= Bedrock level
+# WORLD ?= Bedrock level
+WORLD ?= new_server
 BACKUP_DIR ?= backup
 TS := $(shell date +%Y%m%d-%H%M%S)
 
@@ -68,3 +69,15 @@ install-packs:
 	@test -z "$$(docker ps -q -f name=minecraft-server-base)" || \
 		(echo "Stop the server first: make down" && exit 1)
 	@python3 scripts/install_packs.py "data/worlds/$(WORLD)"
+
+cleanup:
+	@docker exec minecraft-server-base send-command kill @e[type=item]
+	@docker exec minecraft-server-base send-command kill @e[type=xp_orb]
+	@docker exec minecraft-server-base send-command kill @e[type=arrow]
+	@docker exec minecraft-server-base send-command kill @e[type=snowball]
+	@docker exec minecraft-server-base send-command kill @e[type=egg]
+	@docker exec minecraft-server-base send-command kill @e[type=ender_pearl]
+	@docker exec minecraft-server-base send-command kill @e[type=thrown_trident]
+	@docker exec minecraft-server-base send-command kill @e[type=thrown_potion]
+	@docker exec minecraft-server-base send-command kill @e[type=area_effect_cloud]
+	@docker exec minecraft-server-base send-command kill @e[type=falling_block]
